@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  twitter_id: 1
+  user_a: MyString
+  user_b: MyString
+  valid_a: 
+  valid_b: false
+  protected_a: false
+  protected_b: false
+  verified_a: false
+  verified_b: false
+  a_fan_a: false
+  b_fan_a: false
+  a_fri_b: false
+  checked_at: 2010-12-27 21:25:06
+
+two:
+  twitter_id: 1
+  user_a: MyString
+  user_b: MyString
+  valid_a: 
+  valid_b: false
+  protected_a: false
+  protected_b: false
+  verified_a: false
+  verified_b: false
+  a_fan_a: false
+  b_fan_a: false
+  a_fri_b: false
+  checked_at: 2010-12-27 21:25:06

@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ <title>Fancheck</title>
+  <%= stylesheet_link_tag :all %>
+  <%= javascript_include_tag :defaults %>
+  <%= csrf_meta_tag %>
+   <!--[if IE 6]>
+     <style type="text/css">
+     html {overflow-y:hidden;}
+     body {overflow-y:auto;}
+     #page-background {position:absolute; z-index:-1;}
+     #content {position:static;padding:10px;}
+     </style>
+   <![endif]-->
+</head>
+<body>
+<iframe src='/get_online_status' frameborder='0'></iframe>
+<%= yield %>
+
+</body>
+</html>

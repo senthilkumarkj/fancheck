@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  twitter_id: 1
+  oauth_token: MyString
+  oauth_token_secret: MyString
+  mode: false
+
+two:
+  twitter_id: 1
+  oauth_token: MyString
+  oauth_token_secret: MyString
+  mode: false
