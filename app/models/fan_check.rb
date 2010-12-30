@@ -50,49 +50,51 @@ class FanCheck < ActiveRecord::Base
   end
 
   def get_result_text
+    twttr_link_a = get_twitter_link(self.user_a)
+    twttr_link_b = get_twitter_link(self.user_b)
     case self.state
      when 0 #invalid id(s)
       if self.valid_a
-        "We tracked #{get_twitter_link(self.user_a)} but #{get_twitter_link(self.user_b)} eludes us. Typo?"
+        "We tracked #{twttr_link_a} but #{twttr_link_b} eludes us. Typo?"
       elsif self.valid_b
-        "We tracked #{get_twitter_link(self.user_b)} but #{get_twitter_link(self.user_a)} eludes us. Typo?"
+        "We tracked #{twttr_link_b} but #{twttr_link_a} eludes us. Typo?"
       else
-        "#{get_twitter_link(self.user_a)} and #{get_twitter_link(self.user_b)} don't seem to be valid twitter users."
+        "#{twttr_link_a} and #{twttr_link_b} don't seem to be valid twitter users."
       end
      when 1 #both are protected ids
-        "Both #{get_twitter_link(self.user_a)} and #{get_twitter_link(self.user_b)} have protected their accounts. Under cover agents?"
+        "Both #{twttr_link_a} and #{twttr_link_b} have protected their accounts. Under cover agents?"
      when 2 #user_a is protected
-        res = self.b_fan_of_a ? "#{get_twitter_link(self.user_b)} is a fan of #{get_twitter_link(self.user_a)}" : "#{get_twitter_link(self.user_b)} is not a fan of #{get_twitter_link(self.user_a)}."
+        res = self.b_fan_of_a ? "#{twttr_link_b} is a fan of #{twttr_link_a}" : "#{twttr_link_b} is not a fan of #{twttr_link_a}."
         #res += "How about that? #{self.user_a}" if !self.b_fan_of_a && self.verified_a
         #res+= " #{self.user_a} has protected his/her account"
         res
      when 3 #user_b is protected
-        res = self.a_fan_of_b ? "#{get_twitter_link(self.user_a)} is a fan of #{get_twitter_link(self.user_b)}" : "#{get_twitter_link(self.user_a)} is not a fan of #{get_twitter_link(self.user_b)}." 
+        res = self.a_fan_of_b ? "#{twttr_link_a} is a fan of #{twttr_link_b}" : "#{twttr_link_a} is not a fan of #{twttr_link_b}." 
         #res+= " #{self.user_b} has protected his/her account"
         res
      when 4 #both are public
          if self.verified_a && self.verified_b
-           res = self.b_fan_of_a ? "#{get_twitter_link(self.user_b)} is a fan of #{get_twitter_link(self.user_a)}" : " #{get_twitter_link(self.user_b)} is not a fan of #{get_twitter_link(self.user_a)}. WHOA!"
-           res = self.a_fan_of_b ? "#{get_twitter_link(self.user_a)} is a fan of #{get_twitter_link(self.user_b)}" : " #{get_twitter_link(self.user_a)} is not a fan of #{get_twitter_link(self.user_b)}. WHOA!"
-           res = "Hello everybody! We've got fan celebrities. They are fan of each other!!! #{get_twitter_link(self.user_a)} #{get_twitter_link(self.user_b)}" if self.a_fan_of_b && self.b_fan_of_a
+           res = self.b_fan_of_a ? "#{twttr_link_b} is a fan of #{twttr_link_a}" : " #{twttr_link_b} is not a fan of #{twttr_link_a}. WHOA!"
+           res = self.a_fan_of_b ? "#{twttr_link_a} is a fan of #{twttr_link_b}" : " #{twttr_link_a} is not a fan of #{twttr_link_b}. WHOA!"
+           res = "Hello everybody! We've got fan celebrities. They are fan of each other!!! #{twttr_link_a} #{twttr_link_b}" if self.a_fan_of_b && self.b_fan_of_a
            if !self.a_fan_of_b && !self.user_b_of_a
-             res = "Perhaps #{get_twitter_link(self.user_a)} and #{get_twitter_link(self.user_b)} haven't heard of each other. But how come?? It's " + self.followers_count_a > self.followers_count_b ? get_twitter_link(self.user_a) : get_twitter_link(self.user_b)
+             res = "Perhaps #{twttr_link_a} and #{twttr_link_b} haven't heard of each other. But how come?? It's " + self.followers_count_a > self.followers_count_b ? twttr_link_a : twttr_link_b
            end
          elsif self.verified_a || self.verified_b
-           res = self.b_fan_of_a ? "#{get_twitter_link(self.user_b)} is a fan of #{get_twitter_link(self.user_a)}" : " #{get_twitter_link(self.user_b)} is not a fan of #{get_twitter_link(self.user_a)}"
-           res = self.a_fan_of_b ? "#{get_twitter_link(self.user_a)} is a fan of #{get_twitter_link(self.user_b)}" : " #{get_twitter_link(self.user_a)} is not a fan of #{get_twitter_link(self.user_b)}"
+           res = self.b_fan_of_a ? "#{twttr_link_b} is a fan of #{twttr_link_a}" : " #{twttr_link_b} is not a fan of #{twttr_link_a}"
+           res = self.a_fan_of_b ? "#{twttr_link_a} is a fan of #{twttr_link_b}" : " #{twttr_link_a} is not a fan of #{twttr_link_b}"
            if self.a_fan_of_b && self.b_fan_of_a
-             res = "#{get_twitter_link(self.user_a)} and #{get_twitter_link(self.user_b)} are fan of each other! Perhaps " + (self.verified_a ? get_twitter_link(self.user_b) : get_twitter_link(self.user_a)) + " should get verified by Twitter eh?"
+             res = "#{twttr_link_a} and #{twttr_link_b} are fan of each other! Perhaps " + (self.verified_a ? twttr_link_b : twttr_link_a) + " should get verified by Twitter eh?"
            elsif !self.a_fan_of_b && !self.b_fan_of_a
-            res = "#{get_twitter_link(self.user_a)} is not a fan of #{get_twitter_link(self.user_b)}. #{get_twitter_link(self.user_b)} doesn't follow #{get_twitter_link(self.user_a)} either!" if self.verified_a?
-            res = "#{get_twitter_link(self.user_b)} is not a fan of #{get_twitter_link(self.user_a)}. #{get_twitter_link(self.user_a)} doesn't follow #{get_twitter_link(self.user_b)} either!" if self.verified_b?
+            res = "#{twttr_link_a} is not a fan of #{twttr_link_b}. #{twttr_link_b} doesn't follow #{twttr_link_a} either!" if self.verified_a?
+            res = "#{twttr_link_b} is not a fan of #{twttr_link_a}. #{twttr_link_a} doesn't follow #{twttr_link_b} either!" if self.verified_b?
            end
          else
-           res = self.b_fan_of_a ? "#{get_twitter_link(self.user_b)} is a fan of #{get_twitter_link(self.user_a)}" : " #{get_twitter_link(self.user_b)} is not a fan of #{get_twitter_link(self.user_a)}. Celebrity Alert!!"
-           res = self.a_fan_of_b ? "#{get_twitter_link(self.user_a)} is a fan of #{get_twitter_link(self.user_b)}" : " #{get_twitter_link(self.user_a)} is not a fan of #{get_twitter_link(self.user_b)}. Celebrity Alert!!"
-           res = "#{get_twitter_link(self.user_a)} and #{get_twitter_link(self.user_b)} are friends! They are fan of each other!" if self.a_fan_of_b && self.b_fan_of_a
+           res = self.b_fan_of_a ? "#{twttr_link_b} is a fan of #{twttr_link_a}" : " #{twttr_link_b} is not a fan of #{twttr_link_a}. Celebrity Alert!!"
+           res = self.a_fan_of_b ? "#{twttr_link_a} is a fan of #{twttr_link_b}" : " #{twttr_link_a} is not a fan of #{twttr_link_b}. Celebrity Alert!!"
+           res = "#{twttr_link_a} and #{twttr_link_b} are friends! They are fan of each other!" if self.a_fan_of_b && self.b_fan_of_a
            if !self.a_fan_of_b && !self.b_fan_of_a
-             res = "What we have got is two strangers!! #{get_twitter_link(self.user_a)} and #{get_twitter_link(self.user_b)} do not follow each other!"
+             res = "What we have got is two strangers!! #{twttr_link_a} and #{twttr_link_b} do not follow each other!"
            end
          end
          res
